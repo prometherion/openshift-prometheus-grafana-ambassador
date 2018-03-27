@@ -81,7 +81,6 @@ spec:
 
 ## Backlog
 
-Still a lot to do: actually buildt via Docker multi-stage, should be
-Source2Image.
+Still a lot to do: the image is build via Docker multi-stage, but we want to migrate to Source2Image.
 
 No Go tests (my shame).
