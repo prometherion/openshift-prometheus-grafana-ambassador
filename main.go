@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/tls"
+	"crypto/x509"
 	"flag"
 	"fmt"
 	"io/ioutil"
@@ -8,8 +10,6 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"crypto/tls"
-	"crypto/x509"
 )
 
 var (
@@ -44,11 +44,13 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(caCert)
+	if parseOk := caCertPool.AppendCertsFromPEM(caCert); !parseOk {
+		log.Fatal("Error parsing service account CA certificate")
+	}
 
 	// Setup HTTPS client
 	tlsConfig := &tls.Config{
-		RootCAs: caCertPool,
+		RootCAs:            caCertPool,
 		InsecureSkipVerify: *skipInsecure != "",
 	}
 	tlsConfig.BuildNameToCertificate()
