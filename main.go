@@ -22,7 +22,7 @@ type logWriter struct {
 }
 
 // Formatting the logger interface according to customer needs: feel free to edit
-func (writer logWriter) Write(bytes []byte) (int, error) {
+func (writer *logWriter) Write(bytes []byte) (int, error) {
 	return fmt.Print(time.Now().UTC().Format("2006-01-02 15:05:05.000-0700") + " ERROR [proxy] (prometheus) " + string(bytes))
 }
 
