@@ -73,6 +73,8 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 // Setup logger interface and provide a simple validation: if everything is fine start serving :9090
 // (Prometheus standard port and binding on loopback due to Pod network share according to Ambassador pattern)
 func main() {
+	flag.Parse()
+
 	log.SetFlags(0)
 	log.SetOutput(new(logWriter))
 
