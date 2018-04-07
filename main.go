@@ -89,5 +89,5 @@ func main() {
 
 	http.HandleFunc("/", proxy)
 	// TODO: enabling listening only on loopback
-	http.ListenAndServe(":9090", nil)
+	log.Fatal(http.ListenAndServe(":9090", nil))
 }
