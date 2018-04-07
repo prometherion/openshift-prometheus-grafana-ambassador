@@ -22,7 +22,7 @@ type logWriter struct {
 }
 
 // Formatting the logger interface according to customer needs: feel free to edit
-func (writer logWriter) Write(bytes []byte) (int, error) {
+func (writer *logWriter) Write(bytes []byte) (int, error) {
 	return fmt.Print(time.Now().UTC().Format("2006-01-02 15:05:05.000-0700") + " ERROR [proxy] (prometheus) " + string(bytes))
 }
 
@@ -73,6 +73,8 @@ func proxy(w http.ResponseWriter, r *http.Request) {
 // Setup logger interface and provide a simple validation: if everything is fine start serving :9090
 // (Prometheus standard port and binding on loopback due to Pod network share according to Ambassador pattern)
 func main() {
+	flag.Parse()
+
 	log.SetFlags(0)
 	log.SetOutput(new(logWriter))
 
@@ -87,5 +89,5 @@ func main() {
 
 	http.HandleFunc("/", proxy)
 	// TODO: enabling listening only on loopback
-	http.ListenAndServe(":9090", nil)
+	log.Fatal(http.ListenAndServe(":9090", nil))
 }
