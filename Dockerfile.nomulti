@@ -8,7 +8,7 @@ ENV GOOS=linux
 ENV CGO_ENABLED=0
 ENV GOPATH=/go
 COPY ./main.go .
-RUN go build -o grafana-ambassador main.go
-RUN mv grafana-ambassador /usr/bin/grafana-ambassador && rm -f main.go
+RUN go build -o grafana-ambassador main.go && rm -f main.go
+RUN mv grafana-ambassador /usr/bin/grafana-ambassador
 
 ENTRYPOINT ["/usr/bin/grafana-ambassador"]
