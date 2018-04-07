@@ -1,0 +1,14 @@
+# This Dockerfile is intended to be used to build with Docker versions prior to 17.06 CE
+# or with custom Docker distribution like the ones found in Fedora, RHEL or CentOS where
+# the multi-stage build is not already supported.
+
+FROM golang:1.9.4
+WORKDIR /go
+ENV GOOS=linux
+ENV CGO_ENABLED=0
+ENV GOPATH=/go
+COPY ./main.go .
+RUN go build -o grafana-ambassador main.go && rm -f main.go
+RUN mv grafana-ambassador /usr/bin/grafana-ambassador
+
+ENTRYPOINT ["/usr/bin/grafana-ambassador"]
